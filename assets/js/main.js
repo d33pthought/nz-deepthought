@@ -68,13 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
 		e.preventDefault();
 		submit.disabled = true;
 		status.textContent = 'Sending…';
+		// Apps Script only parses url-encoded bodies, which also avoids a CORS preflight
+		const body = new URLSearchParams(new FormData(form));
+		body.set('format', 'json');
 		try {
-			const res = await fetch(form.action, {
-				method: 'POST',
-				body: new FormData(form),
-				headers: { Accept: 'application/json' },
-			});
-			if (!res.ok) throw new Error(res.statusText);
+			const res = await fetch(form.action, { method: 'POST', body });
+			const result = await res.json();
+			if (result.ok !== true) throw new Error(result.error);
 			form.reset();
 			status.textContent = 'Thanks — your message has been sent.';
 		} catch {

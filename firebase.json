@@ -6,6 +6,7 @@
       ".firebaserc",
       "**/.*",
       "**/.*/**",
+      "apps-script/**",
       "**/node_modules/**"
     ],
     "cleanUrls": true,
